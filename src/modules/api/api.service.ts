@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { config } from '../../libs'
+import { config, logger } from '../../libs'
 import { type IOrder } from './api.types'
 
 const api = axios.create({
@@ -11,14 +11,20 @@ const api = axios.create({
 
 const apiService = {
   getOrder: async (orderId: string, telegramId: number): Promise<IOrder | null> => {
-    const { data } = await api.get<IOrder | null>(`/api/bot/${config.TELEGRAM_BOT_TOKEN}/getOrder`, {
-      params: {
-        orderId,
-        telegramId
-      }
-    })
+    try {
+      const { data } = await api.get<IOrder | null>(`/api/bot/${config.TELEGRAM_BOT_TOKEN}/getOrder`, {
+        params: {
+          orderId,
+          telegramId
+        }
+      })
 
-    return data
+      return data
+    } catch (error) {
+      logger.error(error)
+
+      return null
+    }
   }
 }
 
