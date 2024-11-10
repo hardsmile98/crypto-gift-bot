@@ -6,7 +6,6 @@ dotenv.config()
 const configSchema = z.object({
   ENV_MODE: z.string(),
   PORT: z.string().regex(/^\d+$/).transform(Number),
-  CLIENT_URL: z.string(),
   TELEGRAM_BOT_TOKEN: z.string(),
   MINIAPP_URL: z.string(),
   DOMAIN: z.string(),
