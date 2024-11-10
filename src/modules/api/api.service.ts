@@ -3,7 +3,7 @@ import { config, logger } from '../../libs'
 import { type IOrder } from './api.types'
 
 const api = axios.create({
-  baseURL: config.SERVER_URL,
+  baseURL: `${config.SERVER_URL}/api/bot/${config.TELEGRAM_BOT_TOKEN}`,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -12,7 +12,7 @@ const api = axios.create({
 const apiService = {
   getOrder: async (orderId: string, telegramId: number): Promise<IOrder | null> => {
     try {
-      const response = await api.get<{ data: IOrder | null }>(`/api/bot/${config.TELEGRAM_BOT_TOKEN}/getOrder`, {
+      const response = await api.get<{ data: IOrder | null }>('/getOrder', {
         params: {
           orderId,
           telegramId
