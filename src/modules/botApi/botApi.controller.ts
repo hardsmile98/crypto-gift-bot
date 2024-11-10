@@ -34,7 +34,8 @@ const botApiController = {
       await botApiService.sendOrderNotification(req.body)
 
       res.status(StatusCodes.OK).json({
-        status: StatusCodes.OK
+        status: StatusCodes.OK,
+        data: true
       })
     } catch (error) {
       logger.error(error)
