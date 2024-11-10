@@ -1,6 +1,6 @@
 import express from 'express'
 import { webhookCallback } from 'grammy'
-import { bot } from './bot'
+import { bot, botApiRouter } from './modules'
 import crypto from 'node:crypto'
 import { config } from './libs'
 
@@ -15,12 +15,7 @@ const isDev = config.ENV_MODE === 'dev'
 const app = express()
 
 app.use(express.json())
-
-if (!isDev) {
-  app.use(`/${token}`, webhookCallback(bot, 'express', {
-    secretToken
-  }))
-}
+app.use(express.urlencoded({ extended: false }))
 
 const runBot = async (): Promise<void> => {
   await bot.api.deleteWebhook()
@@ -28,13 +23,19 @@ const runBot = async (): Promise<void> => {
   if (isDev) {
     await bot.start()
   } else {
-    await bot.api.setWebhook(`https://${domain}/${token}`)
+    app.use(`/bot/webhook/${token}`, webhookCallback(bot, 'express', {
+      secretToken
+    }))
+
+    await bot.api.setWebhook(`https://${domain}/bot/webhook/${token}`)
 
     console.log(`Bot Launched on https://${domain} domain`)
   }
 }
 
 void runBot()
+
+app.use('/bot/api', botApiRouter)
 
 app.listen(port, () => {
   console.log(`Server Launched on ${port} port`)
