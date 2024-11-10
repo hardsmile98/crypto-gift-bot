@@ -12,14 +12,14 @@ const api = axios.create({
 const apiService = {
   getOrder: async (orderId: string, telegramId: number): Promise<IOrder | null> => {
     try {
-      const { data } = await api.get<IOrder | null>(`/api/bot/${config.TELEGRAM_BOT_TOKEN}/getOrder`, {
+      const response = await api.get<{ data: IOrder | null }>(`/api/bot/${config.TELEGRAM_BOT_TOKEN}/getOrder`, {
         params: {
           orderId,
           telegramId
         }
       })
 
-      return data
+      return response?.data?.data
     } catch (error) {
       logger.error(error)
 
