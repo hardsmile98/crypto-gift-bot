@@ -1,10 +1,7 @@
 import express from 'express'
 import { webhookCallback } from 'grammy'
 import { bot, botApiRouter } from './modules'
-import crypto from 'node:crypto'
 import { config } from './libs'
-
-const secretToken = crypto.randomBytes(64).toString('hex')
 
 const token = config.TELEGRAM_BOT_TOKEN
 const port = config.PORT
@@ -23,9 +20,7 @@ const runBot = async (): Promise<void> => {
   if (isDev) {
     await bot.start()
   } else {
-    app.use(`/bot/webhook/${token}`, webhookCallback(bot, 'express', {
-      secretToken
-    }))
+    app.use(`/bot/webhook/${token}`, webhookCallback(bot, 'express'))
 
     await bot.api.setWebhook(`https://${domain}/bot/webhook/${token}`)
 
