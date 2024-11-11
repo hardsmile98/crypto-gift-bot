@@ -33,6 +33,7 @@ const sendGift = async (ctx: Context): Promise<void> => {
           id: order.id,
           title: 'Send Gift',
           description: `Send a gift of ${order.gift}`,
+          thumbnail_url: 'https://i.ibb.co/gVCvKsb/avatar.png',
           input_message_content: {
             parse_mode: 'HTML',
             message_text: '🎁 I have a <b>gift</b> for you! Tap the button below to open it.'
