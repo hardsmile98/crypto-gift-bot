@@ -30,7 +30,7 @@ const runBot = async (): Promise<void> => {
 
 void runBot()
 
-app.use('/bot/api', botApiRouter)
+app.use(`/bot/api/${token}`, botApiRouter)
 
 app.listen(port, () => {
   console.log(`Server Launched on ${port} port`)
