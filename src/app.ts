@@ -1,7 +1,7 @@
 import express from 'express'
 import { webhookCallback } from 'grammy'
-import { bot, botApiRouter } from './modules'
-import { config } from './libs'
+import { bot, botApiRouter } from '@/modules'
+import { config } from '@/libs'
 
 const token = config.TELEGRAM_BOT_TOKEN
 const port = config.PORT

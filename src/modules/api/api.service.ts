@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { config, logger } from '../../libs'
+import { config, logger } from '@/libs'
 import { type IOrder } from './api.types'
 
 const api = axios.create({

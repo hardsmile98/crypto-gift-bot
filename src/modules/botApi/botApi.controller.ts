@@ -1,6 +1,6 @@
 import { type Request, type Response } from 'express'
 import { ReasonPhrases, StatusCodes } from 'http-status-codes'
-import { logger } from '../../libs'
+import { logger } from '@/libs'
 import { botApiService } from './botApi.service'
 import { type OrderNotification, type GetAvatar } from './botApi.schema'
 

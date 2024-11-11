@@ -1,8 +1,8 @@
 
 import { bot } from '../bot'
+import { config } from '@/libs'
 import { type OrderNotification } from './botApi.schema'
 import { InlineKeyboard } from 'grammy'
-import { config } from '../../libs'
 
 const botApiService = {
   getAvatar: async (telegramId: number) => {

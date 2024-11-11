@@ -1,6 +1,6 @@
 import { InlineKeyboard, InputFile, type Context } from 'grammy'
 import path from 'path'
-import { config, logger } from '../../../../libs'
+import { config, logger } from '@/libs'
 
 const start = async (ctx: Context): Promise<void> => {
   try {

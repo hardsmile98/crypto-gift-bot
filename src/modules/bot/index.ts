@@ -1,7 +1,7 @@
 import { Bot, session } from 'grammy'
+import { config } from '@/libs'
 import { start, sendGift } from './handlers'
 import { type MyContext } from './types'
-import { config } from '../../libs'
 
 const token = config.TELEGRAM_BOT_TOKEN
 

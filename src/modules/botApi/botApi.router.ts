@@ -1,7 +1,8 @@
 import { Router } from 'express'
+
+import { validateRequest } from '@/middlewares'
 import { botApiController } from './botApi.controller'
 import { getAvatarSchema, orderNotificationSchema } from './botApi.schema'
-import { validateRequest } from '../../middlewares'
 
 const botApiRouter = Router()
 
