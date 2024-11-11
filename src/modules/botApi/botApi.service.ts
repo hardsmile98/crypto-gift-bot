@@ -46,14 +46,14 @@ const botApiService = {
       }
 
       case 'receive': {
-        message = `⚡️ <b>${data.orderDetail.from?.firstName ?? ''}<b/> has given you the gift of <b>${data.orderDetail.gift}</b>`
+        message = `⚡️ <b>${data.orderDetail.from?.firstName ?? ''}</b> has given you the gift of <b>${data.orderDetail.gift}</b>`
         buttonText = 'View Gift'
 
         break
       }
 
       case 'send': {
-        message = `👌 <b>${data.orderDetail.to?.firstName ?? ''}<b/> received your gift of <b>${data.orderDetail.gift}</b>`
+        message = `👌 <b>${data.orderDetail.to?.firstName ?? ''}</b> received your gift of <b>${data.orderDetail.gift}</b>`
         buttonText = 'Open App'
 
         break
