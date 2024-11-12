@@ -4,7 +4,7 @@ import { config, logger } from '@/libs'
 
 const start = async (ctx: Context): Promise<void> => {
   try {
-    const bannerImagePath = path.resolve(__dirname, '../../../../../assets/banner.png')
+    const bannerImagePath = path.join(process.cwd(), 'assets/banner.png')
 
     const image = new InputFile(bannerImagePath)
 
