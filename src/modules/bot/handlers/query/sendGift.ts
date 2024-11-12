@@ -1,7 +1,6 @@
 import { InlineKeyboard, type Context } from 'grammy'
 import { type InlineQueryResultArticle } from 'grammy/types'
-import { config, logger } from '@/libs'
-import { apiService } from '@/modules'
+import { config, logger, apiService } from '@/libs'
 
 const sendGift = async (ctx: Context): Promise<void> => {
   try {
