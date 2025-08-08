@@ -1,37 +1,66 @@
 import express from 'express'
-import { webhookCallback } from 'grammy'
-import { bot, botApiRouter } from '@/modules'
-import { config } from '@/libs'
+import { WebSocketServer } from 'ws'
+import cors from 'cors'
+import { config } from '@/constants'
+import { startPragmatic } from '@/modules/pragmatic'
+import { getResult, resetResult } from './database'
 
-const token = config.TELEGRAM_BOT_TOKEN
-const port = config.PORT
-const domain = config.DOMAIN
-
-const isDev = config.ENV_MODE === 'dev'
+const apiPort = config.API_PORT
 
 const app = express()
 
 app.use(express.json())
+
 app.use(express.urlencoded({ extended: false }))
 
-const runBot = async (): Promise<void> => {
-  await bot.api.deleteWebhook()
+app.use(cors({
+  credentials: true,
+  origin: process.env.CLIENT_HOST
+}))
 
-  if (isDev) {
-    await bot.start()
-  } else {
-    app.use(`/bot/webhook/${token}`, webhookCallback(bot, 'express'))
+const start = (): void => {
+  const wss = new WebSocketServer({ port: config.WS_PORT })
 
-    await bot.api.setWebhook(`https://${domain}/bot/webhook/${token}`)
-
-    console.log(`Bot Launched on https://${domain} domain`)
+  const sendAllClients = (data: any): void => {
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(data)
+      }
+    })
   }
+
+  resetResult()
+
+  let wssPragmatic = startPragmatic(sendAllClients)
+
+  wss.on('connection', ws => {
+    ws.send(JSON.stringify({
+      event: 'init',
+      data: getResult()
+    }))
+  })
+
+  app.post('/api/reconnect', function (_, res) {
+    if (wssPragmatic?.readyState === WebSocket.OPEN) {
+      wssPragmatic.close()
+    }
+
+    resetResult()
+
+    wssPragmatic = startPragmatic(sendAllClients)
+
+    res.status(200).json({ success: true })
+  })
+
+  app.get('/api/infoConnect', function (_, res) {
+    const isOpen = wssPragmatic?.readyState === WebSocket.OPEN
+
+    res.status(200).json({ success: true, isOpen })
+  })
+
+  app.listen(apiPort, () => {
+    console.log(`Server Launched on ${apiPort} port`)
+  })
 }
 
-void runBot()
-
-app.use(`/bot/api/${token}`, botApiRouter)
-
-app.listen(port, () => {
-  console.log(`Server Launched on ${port} port`)
-})
+start()
